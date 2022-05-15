@@ -73,7 +73,7 @@
 
 .imageCard button {
     position: absolute;
-    right: 3vw;
+    right: 5%;
     top: 1.5vh;
     background-color: transparent;
     color: transparent;
@@ -114,8 +114,8 @@
     font-weight: 700;
     font-size: 18px;
     color: transparent;
-    left: 3vw;
-    bottom: 1vh;
+    left: 5%;
+    bottom: 0vh;
     font-family: 'Montserrat';
     transition: all .5s;
 }
@@ -127,8 +127,7 @@
 }
 
 .imageHorizontal {
-    width: 382.87px;
-    height: 306.29px;
+    width: 100%;
     border-radius: 16px;
     filter: brightness(1);
     transition: all .5s;
@@ -138,11 +137,6 @@
 .imageCard:hover .imageHorizontal {
     filter: brightness(0.8);
 }
-
-body {
-    margin: 0 15rem;
-}
-
 
 
 .signInModalContainer {
@@ -167,6 +161,13 @@ body {
     font-family: 'Noto Sans';
     font-size: 14px;
     font-weight: 500;
+    transition: all .5s;
+}
+
+.errorInput {
+    border: 1px solid #eb5757b3;
+    color: #eb5757b3;
+
 }
 
 .defaultInput:focus {
@@ -254,3 +255,26 @@ body {
     color: #333333;
 }
 
+.my-masonry-grid {
+    display: -webkit-box; /* Not needed if autoprefixing */
+    display: -ms-flexbox; /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -30px; /* gutter size offset */
+    
+    width: auto;
+}
+
+.my-masonry-grid_column {
+    padding-left: 30px; /* gutter size */
+    background-clip: padding-box;
+}
+  
+.customFlexNav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+button:focus-visible {
+    outline: none;
+}

@@ -4,7 +4,7 @@ import ImageContainer from './components/ImageContainer';
 
 const MyUnsplashApp = () => {
   return (
-    <div>
+    <div className='container'>
         <NavBar/>
         <ImageContainer/>
     </div>

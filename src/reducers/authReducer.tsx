@@ -1,7 +1,7 @@
-import { types } from "../types/types";
+import { types } from '../types/types';
 
 const initialState = {
-    checking: true
+    logged: false
 }
 
 export const authReducer = (state = initialState, action: any) => {
@@ -10,17 +10,20 @@ export const authReducer = (state = initialState, action: any) => {
         
         case types.authSignIn:
             return {
+                logged: true,
+                user: action.payload.user,
+                token: action.payload.token,
                 
             }
 
         case types.authCheckToken:
             return {
-                
+                logged: true
             }
 
         case types.authLogout:
             return {
-                
+                logged: false
             }
 
         default:

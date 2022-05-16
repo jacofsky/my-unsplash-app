@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchImages } from '../helpers/fetch'
+import { fetchImages } from '../helpers/fetch';
 import { Image as Imagets } from '../typescript/interfaces'
 import Image from './Image'
 import Masonry from 'react-masonry-css'

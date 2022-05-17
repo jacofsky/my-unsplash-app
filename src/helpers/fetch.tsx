@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ImagePaginated } from '../typescript/interfaces'
+import { ImagePaginated, UserLogIn, UserRegister } from '../typescript/interfaces'
 
 
 const imagePath:string = process.env.REACT_APP_API_IMAGE_PATH as string
@@ -35,12 +35,30 @@ export const fetchimagesByLabel = async(limit:number, skip:number, label:string)
 
 export const fetchUploadImage = async(link:string, label:string, token:string) => {
 
-    await axios.post(`${imagePath}/`, {link, label}, {headers: {"x-token": token}})
+    const resp = await axios.post(`${imagePath}/`, {link, label}, {headers: {"x-token": token}})
+    return resp
 
 }
 
 export const fetchDeleteImage = async(imageId:string, token:string) => {
 
-    await axios.post(`${imagePath}/${imageId}`, {headers: {"x-token": token}})
+    const resp = await axios.post(`${imagePath}/${imageId}`, {headers: {"x-token": token}})
+    return resp
 
+}
+
+export const fetchRegister = async (user:UserRegister) => {
+    
+    const resp = await axios.post(`${userPath}}/register`, user)
+    return resp
+}
+
+export const fetchLogin = async (user:UserLogIn) => {
+    const resp = await axios.post(`${userPath}}/login`, user)
+    return resp
+}
+
+export const fetchRenewToken = async (uid:string) => {
+    const resp = await axios.post(`${userPath}}/renew`, {uid})
+    return resp
 }

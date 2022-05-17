@@ -1,7 +1,8 @@
 import { types } from '../types/types';
 
 const initialState = {
-    logged: false
+    logged: false,
+    error: false
 }
 
 interface actionTS {
@@ -18,19 +19,28 @@ export const authReducer = (state = initialState, action:actionTS) => {
                 ...state,
                 ...action.payload,
                 logged: true,
-                
+                error: false
             }
 
         case types.authCheckToken:
             return {
                 ...state,
                 ...action.payload,
-                logged: true
+                logged: true,
+                error: false
+            }
+        
+            case types.authError:
+            return {
+                msg: action.payload,
+                logged: false,
+                error: true
             }
 
         case types.authLogout:
             return {
-                logged: false
+                logged: false,
+                error: false
             }
 
         default:

@@ -3,7 +3,7 @@ import { Modal, Spinner } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { startLogin } from '../actions/auth';
+import { startLogin, startRegister } from '../actions/auth';
 import { startLaodingSignin, finishLaodingSignin } from '../actions/uiActions';
 
 interface formSignIn {
@@ -54,8 +54,8 @@ const SignIn = () => {
         }),
         validateOnChange: false,
         validateOnBlur: false,
-        onSubmit: formValues => {
-            dispatch(startLogin(formValues) as any)
+        onSubmit: async(formValues) => {
+            await dispatch(startLogin(formValues) as any)
             console.log(error)
 
             if(error) {
@@ -82,10 +82,13 @@ const SignIn = () => {
         }),
         validateOnChange: false,
         validateOnBlur: false,
-        onSubmit: formValues => {
-            console.log(formValues)
-            formikRegister.resetForm();
-            setIsOpenRegister(false);
+        onSubmit: async(formValues) => {
+            await dispatch(startRegister({name: formValues.name, email: formValues.email, password: formValues.password}) as any)
+            
+            if(!error) {
+                formikSingIn.resetForm();
+                setIsOpenRegister(false);
+            }
         }
     })
 
@@ -154,32 +157,45 @@ const SignIn = () => {
             
 
             <Modal.Body>
-                <h3 className='modal-tittle'>Create an account</h3>
 
-                <form onSubmit={formikRegister.handleSubmit} className='signInModalContainer mt-3'>
-                    <label>Name</label>
-                    <input onChange={formikRegister.handleChange} value={formikRegister.values.name} className={ (formikRegister.errors.name) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Your name :)' name='name' />
-                    <label>Email</label>
-                    <input onChange={formikRegister.handleChange} value={formikRegister.values.email} className={ (formikRegister.errors.email) ?`defaultInput errorInput` : `defaultInput` } type="email" placeholder='youremail@example.com' name='email' />
-                    <label>Password</label>
-                    <input onChange={formikRegister.handleChange} value={formikRegister.values.password} className={ (formikRegister.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Password' name='password' />
-                    <label>Confirm password</label>
-                    <input onChange={formikRegister.handleChange} value={formikRegister.values.password2} className={ (formikRegister.errors.password2) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Repeat password' name='password2' />
-                    
-                    <div className="buttonGroups my-3">
-                        <button type='button' className='negativeButton' onClick={() => {
-                            closeModalRegister()
-                            openModalSingIn()
-                        }}>Sign in</button>
+            {
+                    loadingInModal
+                        ?
+                            <Spinner animation='border' variant='success'/>
+                        :
+                            <>
+                                
+                                <h3 className='modal-tittle'>Create an account</h3>
+                                
+                                {error && <p className='infoError'>{msg}</p>}
 
-                        <div>
-                            <button type='button' className='negativeButton' onClick={closeModalRegister}>Cancel</button>
-                            <button type='submit' className='afirmativeButton'>Register</button>
-                        </div>
+                                <form onSubmit={formikRegister.handleSubmit} className='signInModalContainer mt-3'>
+                                    <label>Name</label>
+                                    <input onChange={formikRegister.handleChange} value={formikRegister.values.name} className={ (formikRegister.errors.name) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Your name :)' name='name' />
+                                    <label>Email</label>
+                                    <input onChange={formikRegister.handleChange} value={formikRegister.values.email} className={ (formikRegister.errors.email) ?`defaultInput errorInput` : `defaultInput` } type="email" placeholder='youremail@example.com' name='email' />
+                                    <label>Password</label>
+                                    <input onChange={formikRegister.handleChange} value={formikRegister.values.password} className={ (formikRegister.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Password' name='password' />
+                                    <label>Confirm password</label>
+                                    <input onChange={formikRegister.handleChange} value={formikRegister.values.password2} className={ (formikRegister.errors.password2) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Repeat password' name='password2' />
+                                    
+                                    <div className="buttonGroups my-3">
+                                        <button type='button' className='negativeButton' onClick={() => {
+                                            closeModalRegister()
+                                            openModalSingIn()
+                                        }}>Sign in</button>
 
-                    </div>
+                                        <div>
+                                            <button type='button' className='negativeButton' onClick={closeModalRegister}>Cancel</button>
+                                            <button type='submit' className='afirmativeButton'>Register</button>
+                                        </div>
 
-                </form>
+                                    </div>
+
+                                </form>
+                            </>
+
+            }
 
             </Modal.Body>
 

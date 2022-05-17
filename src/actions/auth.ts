@@ -7,17 +7,23 @@ import { types } from "../types/types";
 export const startRegister = (user:UserRegister) => {
     return async(dispatch:any) => {
 
-        const data = await fetchRegister(user)
-        console.log(data)
-
-        if (data.status === 201) {
-
-            const user = { token: data.data.token, name: data.data.user.name, password: data.data.user.password}
-            dispatch(signIn(user))
+        dispatch(startLaodingSignin())
+        
+        try {
+            const data = await fetchRegister(user)
+            console.log(data)
+            const responseUser = { token: data.data.token, name: data.data.user.name, password: data.data.user.password}
+            dispatch(signIn(responseUser))
             
-        } else {
-            dispatch(authError(data.data.msg))
+        } catch (error:any) {
+            console.log(error)
+            dispatch(authError(error.response.data.msg))
         }
+
+        dispatch(finishLaodingSignin())
+        
+        
+        
 
     }
 }
@@ -32,16 +38,13 @@ export const startLogin = (user:UserLogIn) => {
             console.log(data)
             const respUser = { token: data.data.token, name: data.data.user.name, password: data.data.user.password}
             dispatch(signIn(respUser))
+
         } catch (error:any) {
             dispatch(authError(error.response.data.msg))
+
         }
+
         dispatch(finishLaodingSignin())
-
-
-            
-            
-        
-        
 
 
     }

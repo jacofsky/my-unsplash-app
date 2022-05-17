@@ -278,3 +278,8 @@
 button:focus-visible {
     outline: none;
 }
+
+.infoError {
+    color: #EB5757;
+    font-weight: bold;
+}

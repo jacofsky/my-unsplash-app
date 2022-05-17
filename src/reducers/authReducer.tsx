@@ -4,20 +4,27 @@ const initialState = {
     logged: false
 }
 
-export const authReducer = (state = initialState, action: any) => {
+interface actionTS {
+    payload: any,
+    type: any
+}
+
+export const authReducer = (state = initialState, action:actionTS) => {
 
     switch (action.type) {
         
         case types.authSignIn:
             return {
+                ...state,
+                ...action.payload,
                 logged: true,
-                user: action.payload.user,
-                token: action.payload.token,
                 
             }
 
         case types.authCheckToken:
             return {
+                ...state,
+                ...action.payload,
                 logged: true
             }
 

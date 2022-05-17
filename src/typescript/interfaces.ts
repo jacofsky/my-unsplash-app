@@ -1,3 +1,8 @@
+export interface ImagePaginated {
+    count: number,
+    images: Image[]
+}
+
 export interface Image {
     _id: string,
     link: string,

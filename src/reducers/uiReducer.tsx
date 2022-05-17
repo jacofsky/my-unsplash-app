@@ -1,17 +1,18 @@
+import { AnyAction } from "redux";
 import { types } from "../types/types";
 
 const initialState = {
-    loading: true
+    loading: false
 }
 
-export const authReducer = (state = initialState, action: any) => {
+export const uiReducer = (state = initialState, action: AnyAction) => {
 
     switch (action.type) {
         
         case types.uiLoading:
             return {
                 ...state,
-                loading: true  
+                loading: true 
             }
 
         case types.uiFinishLoading:

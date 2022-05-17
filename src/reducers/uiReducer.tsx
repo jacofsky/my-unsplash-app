@@ -2,7 +2,9 @@ import { AnyAction } from "redux";
 import { types } from "../types/types";
 
 const initialState = {
-    loading: false
+    loading: false,
+    loadingInModal: false,
+    msg: null
 }
 
 export const uiReducer = (state = initialState, action: AnyAction) => {
@@ -19,6 +21,18 @@ export const uiReducer = (state = initialState, action: AnyAction) => {
             return {
                 ...state,
                 loading: false   
+            }
+
+        case types.uiLoadingSignin:
+            return {
+                ...state,
+                loadingInModal: true 
+            }
+
+        case types.uiFinishLoadingSignin:
+            return {
+                ...state,
+                loadingInModal: false   
             }
 
         default:

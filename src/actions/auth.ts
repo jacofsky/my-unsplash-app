@@ -1,4 +1,4 @@
-import { startLaoding } from "./uiActions"
+import { startLaodingSignin, finishLaodingSignin } from './uiActions';
 import { UserLogged, UserLogIn, UserRegister } from '../typescript/interfaces';
 import { fetchLogin, fetchRegister } from "../helpers/fetch";
 import { types } from "../types/types";
@@ -25,17 +25,24 @@ export const startRegister = (user:UserRegister) => {
 export const startLogin = (user:UserLogIn) => {
     return async(dispatch:any) => {
 
-        const data = await fetchLogin(user)
-        console.log(data)
+        dispatch(startLaodingSignin())
 
-        if (data.status === 200) {
-
-            const user = { token: data.data.token, name: data.data.user.name, password: data.data.user.password}
-            dispatch(signIn(user))
-            
-        } else {
-            dispatch(authError(data.data.msg))
+        try {
+            const data = await fetchLogin(user)
+            console.log(data)
+            const respUser = { token: data.data.token, name: data.data.user.name, password: data.data.user.password}
+            dispatch(signIn(respUser))
+        } catch (error:any) {
+            dispatch(authError(error.response.data.msg))
         }
+        dispatch(finishLaodingSignin())
+
+
+            
+            
+        
+        
+
 
     }
 }
@@ -50,6 +57,6 @@ const signIn = ({token, name, password}:UserLogged) => ({
 })
 
 const authError = (msg:string) => ({
-    type: types.authSignIn,
-    payload: msg
+    type: types.authError,
+    payload: {msg}
 })

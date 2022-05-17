@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { types } from '../types/types';
 
 const initialState = {
@@ -5,12 +6,8 @@ const initialState = {
     error: false
 }
 
-interface actionTS {
-    payload: any,
-    type: any
-}
 
-export const authReducer = (state = initialState, action:actionTS) => {
+export const authReducer = (state = initialState, action:AnyAction) => {
 
     switch (action.type) {
         
@@ -32,7 +29,7 @@ export const authReducer = (state = initialState, action:actionTS) => {
         
             case types.authError:
             return {
-                msg: action.payload,
+                ...action.payload,
                 logged: false,
                 error: true
             }

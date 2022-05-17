@@ -8,3 +8,11 @@ export const startLaoding = () => ({
 export const finishLaoding = () => ({
     type: types.uiFinishLoading
 })
+
+export const startLaodingSignin = () => ({
+    type: types.uiLoadingSignin
+})
+
+export const finishLaodingSignin = () => ({
+    type: types.uiFinishLoadingSignin
+})

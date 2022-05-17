@@ -49,16 +49,17 @@ export const fetchDeleteImage = async(imageId:string, token:string) => {
 
 export const fetchRegister = async (user:UserRegister) => {
     
-    const resp = await axios.post(`${userPath}}/register`, user)
+    const resp = await axios.post(`${userPath}/register`, user)
     return resp
 }
 
 export const fetchLogin = async (user:UserLogIn) => {
-    const resp = await axios.post(`${userPath}}/login`, user)
+    const resp = await axios.post(`${userPath}/login`, user)
+    console.log(resp)
     return resp
 }
 
 export const fetchRenewToken = async (uid:string) => {
-    const resp = await axios.post(`${userPath}}/renew`, {uid})
+    const resp = await axios.post(`${userPath}/renew`, {uid})
     return resp
 }

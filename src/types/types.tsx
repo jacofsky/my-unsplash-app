@@ -7,7 +7,9 @@ export const types = {
 
 
     uiLoading: '[ui] Loading',
-    uiFinishLoading: '[ui] Loading finish'
+    uiFinishLoading: '[ui] Loading finish',
+    uiLoadingSignin: '[ui] Loading signin',
+    uiFinishLoadingSignin: '[ui] Loading signin finish '
 
 
 }

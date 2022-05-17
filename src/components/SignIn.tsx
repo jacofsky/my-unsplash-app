@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
-import { Modal } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux';
+import { startLogin } from '../actions/auth';
+import { startLaodingSignin, finishLaodingSignin } from '../actions/uiActions';
 
 interface formSignIn {
     email: string;
@@ -21,6 +24,7 @@ const SignIn = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalIsOpenRegister, setIsOpenRegister] = useState(false);
 
+    
 
     const openModalSingIn = () => setIsOpen(true);  
     const closeModalSingIn = () => {
@@ -33,6 +37,10 @@ const SignIn = () => {
         formikRegister.resetForm();
         setIsOpenRegister(false);  
     } 
+
+    const dispatch = useDispatch()
+    const { loadingInModal } = useSelector((state:any) => state.ui)
+    const { error, msg } = useSelector((state:any) => state.auth)
 
 
     const formikSingIn = useFormik<formSignIn>({
@@ -47,9 +55,15 @@ const SignIn = () => {
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: formValues => {
-            console.log(formValues)
-            formikSingIn.resetForm();
-            setIsOpen(false);
+            dispatch(startLogin(formValues) as any)
+            console.log(error)
+
+            if(error) {
+                console.log(msg)
+            } else {
+                formikSingIn.resetForm();
+                setIsOpen(false);
+            }
         }
     })
 
@@ -91,32 +105,41 @@ const SignIn = () => {
             
 
             <Modal.Body>
-                <h3 className='modal-tittle'>Sign in your account</h3>
 
-                <form onSubmit={formikSingIn.handleSubmit} className='signInModalContainer mt-3'>
-                    <label>Email</label>
-                    <input onChange={formikSingIn.handleChange} value={formikSingIn.values.email} className={ (formikSingIn.errors.email) ?`defaultInput errorInput` : `defaultInput` } type="email" placeholder='youremail@example.com' name='email' />
-                    <label>Password</label>
-                    <input onChange={formikSingIn.handleChange} value={formikSingIn.values.password} className={ (formikSingIn.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="password" placeholder='Your password here!' name='password' />
-                    
-                    <div className="buttonGroups my-3">
-                        <button className='negativeButton' 
-                        type='button'
-                        onClick={() => {
-                            closeModalSingIn()
-                            openModalRegister()
-                        }}>
-                            Create account
-                        </button>
+                {
+                    loadingInModal
+                        ?
+                            <Spinner animation='border' variant='success'/>
+                        :
+                            <>
+                                <h3 className='modal-tittle'>Sign in your account</h3>
 
-                        <div>
-                            <button type='button' className='negativeButton' onClick={closeModalSingIn}>Cancel</button>
-                            <button type='submit' className='afirmativeButton'>Sign In</button>
-                        </div>
+                                <form onSubmit={formikSingIn.handleSubmit} className='signInModalContainer mt-3'>
+                                    <label>Email</label>
+                                    <input onChange={formikSingIn.handleChange} value={formikSingIn.values.email} className={ (formikSingIn.errors.email) ?`defaultInput errorInput` : `defaultInput` } type="email" placeholder='youremail@example.com' name='email' />
+                                    <label>Password</label>
+                                    <input onChange={formikSingIn.handleChange} value={formikSingIn.values.password} className={ (formikSingIn.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="password" placeholder='Your password here!' name='password' />
+                                    
+                                    <div className="buttonGroups my-3">
+                                        <button className='negativeButton' 
+                                        type='button'
+                                        onClick={() => {
+                                            closeModalSingIn()
+                                            openModalRegister()
+                                        }}>
+                                            Create account
+                                        </button>
 
-                    </div>
+                                        <div>
+                                            <button type='button' className='negativeButton' onClick={closeModalSingIn}>Cancel</button>
+                                            <button type='submit' className='afirmativeButton'>Sign In</button>
+                                        </div>
 
-                </form>
+                                    </div>
+
+                                </form>
+                            </>
+                }
 
             </Modal.Body>
 

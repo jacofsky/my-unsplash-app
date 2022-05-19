@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "baseUrl": "./",
+    "paths": {
+      "crypto": ["node_modules/crypto-js"]
+    },
     "lib": [
       "dom",
       "dom.iterable",

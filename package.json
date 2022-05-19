@@ -32,7 +32,8 @@
     "yup": "^0.32.11"
   },
   "browser": {
-    "crypto": false
+    "crypto": false,
+    "stream": false
   },
   "scripts": {
     "start": "react-scripts start",

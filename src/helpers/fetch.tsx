@@ -10,6 +10,7 @@ export const fetchImages = async(limit:number, skip:number) => {
 
     const data: any = await axios.get(`${imagePath}/`, {params: {limit, skip}})
     const images:ImagePaginated = data.data
+    console.log(images)
     
     return images
 
@@ -40,9 +41,9 @@ export const fetchUploadImage = async(link:string, label:string, token:string) =
 
 }
 
-export const fetchDeleteImage = async(imageId:string, token:string) => {
+export const fetchDeleteImage = async(imageId:string, token:string, password:string) => {
 
-    const resp = await axios.post(`${imagePath}/${imageId}`, {headers: {"x-token": token}})
+    const resp = await axios.delete(`${imagePath}/${imageId}`, {headers: {"x-token": token}, data: {password}})
     return resp
 
 }

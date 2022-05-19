@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { Image as ImageTS } from '../typescript/interfaces'
 
 import DeleteButton from './DeleteButton';
@@ -11,7 +12,7 @@ interface IProps {
 
 const Image = ({data}:IProps) => {
     
-    
+    const {userId} = useSelector((state:any) => state.auth)
 
 
     return (
@@ -21,8 +22,8 @@ const Image = ({data}:IProps) => {
 
             <p>{data.label}</p>
 
+            {(userId === data.user) && <DeleteButton imageId={data._id}/>}
             
-            <DeleteButton/>
             
 
         </div>

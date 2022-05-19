@@ -3,8 +3,8 @@ import { Modal, Spinner } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { startLogin, startRegister } from '../actions/auth';
-import { startLaodingSignin, finishLaodingSignin } from '../actions/uiActions';
+import { authCleanError, startLogin, startRegister } from '../actions/auth';
+import { openLoginModal, openRegisterModal, closeLoginModal, closeRegisterModal } from '../actions/uiActions';
 
 interface formSignIn {
     email: string;
@@ -21,26 +21,23 @@ interface formRegister {
 
 const SignIn = () => {
 
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [modalIsOpenRegister, setIsOpenRegister] = useState(false);
-
-    
-
-    const openModalSingIn = () => setIsOpen(true);  
+    const openModalSingIn = () => dispatch(openLoginModal())
     const closeModalSingIn = () => {
+        dispatch(authCleanError())
         formikSingIn.resetForm();
-        setIsOpen(false); 
+        dispatch(closeLoginModal())
     }
 
-    const openModalRegister = () => setIsOpenRegister(true);  
+    const openModalRegister = () => dispatch(openRegisterModal())  
     const closeModalRegister = () => {
+        dispatch(authCleanError())
         formikRegister.resetForm();
-        setIsOpenRegister(false);  
+        dispatch(closeRegisterModal())  
     } 
 
     const dispatch = useDispatch()
-    const { loadingInModal } = useSelector((state:any) => state.ui)
-    const { error, msg } = useSelector((state:any) => state.auth)
+    const { loadingInModal, registerModal, loginModal } = useSelector((state:any) => state.ui)
+    const { error, msg, locationError } = useSelector((state:any) => state.auth)
 
 
     const formikSingIn = useFormik<formSignIn>({
@@ -57,13 +54,6 @@ const SignIn = () => {
         onSubmit: async(formValues) => {
             await dispatch(startLogin(formValues) as any)
             console.log(error)
-
-            if(error) {
-                console.log(msg)
-            } else {
-                formikSingIn.resetForm();
-                setIsOpen(false);
-            }
         }
     })
 
@@ -84,11 +74,6 @@ const SignIn = () => {
         validateOnBlur: false,
         onSubmit: async(formValues) => {
             await dispatch(startRegister({name: formValues.name, email: formValues.email, password: formValues.password}) as any)
-            
-            if(!error) {
-                formikSingIn.resetForm();
-                setIsOpenRegister(false);
-            }
         }
     })
 
@@ -96,11 +81,11 @@ const SignIn = () => {
         <div>
         <button className='me-4 navSingin' onClick={openModalSingIn}>
             <i className="bi bi-person-circle me-2"></i>
-            SignIn
+            <p className='siginOverFlow'>SignIn</p>
         </button> 
         
         <Modal
-            show={modalIsOpen}
+            show={loginModal}
             onHide={closeModalSingIn}
             dialogClassName='mt-5 modalStyle'
 
@@ -112,10 +97,14 @@ const SignIn = () => {
                 {
                     loadingInModal
                         ?
-                            <Spinner animation='border' variant='success'/>
+                            <div className='spinnerSignIn'>
+                                <Spinner animation='border' variant='success' />
+                            </div> 
                         :
                             <>
                                 <h3 className='modal-tittle'>Sign in your account</h3>
+
+                                {(error && locationError === 'signIn' ) && <p className='infoError'>{msg}</p>}
 
                                 <form onSubmit={formikSingIn.handleSubmit} className='signInModalContainer mt-3'>
                                     <label>Email</label>
@@ -149,9 +138,9 @@ const SignIn = () => {
         </Modal>
 
         <Modal
-            show={modalIsOpenRegister}
+            show={registerModal}
             onHide={closeModalRegister}
-            dialogClassName='mt-5 modalStyle'
+            dialogClassName='mt-5 modalStyle '
 
         >
             
@@ -161,13 +150,15 @@ const SignIn = () => {
             {
                     loadingInModal
                         ?
-                            <Spinner animation='border' variant='success'/>
+                            <div className='modalCenter'>
+                                <Spinner animation='border' variant='success' />
+                            </div> 
                         :
                             <>
                                 
                                 <h3 className='modal-tittle'>Create an account</h3>
                                 
-                                {error && <p className='infoError'>{msg}</p>}
+                                {(error && locationError === 'register' ) && <p className='infoError'>{msg}</p>}
 
                                 <form onSubmit={formikRegister.handleSubmit} className='signInModalContainer mt-3'>
                                     <label>Name</label>

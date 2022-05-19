@@ -4,7 +4,9 @@ import { types } from "../types/types";
 const initialState = {
     loading: false,
     loadingInModal: false,
-    msg: null
+    msg: null,
+    registerModal: false,
+    loginModal: false
 }
 
 export const uiReducer = (state = initialState, action: AnyAction) => {
@@ -33,6 +35,48 @@ export const uiReducer = (state = initialState, action: AnyAction) => {
             return {
                 ...state,
                 loadingInModal: false   
+            }
+
+        case types.uiOpenLoginModal:
+            return {
+                ...state,
+                loginModal: true   
+            }
+
+        case types.uiCloseLoginModal:
+            return {
+                ...state,
+                loginModal: false   
+            }
+        
+        case types.uiOpenRegisterModal:
+            return {
+                ...state,
+                registerModal: true   
+            }
+
+        case types.uiCloseRegisterModal:
+            return {
+                ...state,
+                registerModal: false   
+            }
+
+        case types.uiReloadImages:
+            return {
+                ...state,
+                ...action.payload   
+            }
+        
+        case types.uiSetSearcher:
+            return {
+                ...state,
+                ...action.payload   
+            }
+
+        case types.uiSetSearcher:
+            return {
+                ...state,
+                label: null   
             }
 
         default:

@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUploadImage } from '../helpers/fetch';
+import { reloadImages } from '../actions/uiActions';
 
 interface formValues {
     label: string;
@@ -12,12 +15,15 @@ const AddPhoto = () => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
+    const {logged, token} = useSelector((state:any) => state.auth)
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => {
         formik.resetForm();
         setIsOpen(false);
     }
+
+    const dispatch = useDispatch()
 
     const formik = useFormik<formValues>({
         initialValues: {
@@ -26,22 +32,31 @@ const AddPhoto = () => {
         },
         validationSchema: Yup.object({
             label: Yup.string().required(),
-            link: Yup.string().matches(/((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/, 'Enter correct url!').required()
+            link: Yup.string().matches(/\/\/(\S+?(?:jpe?g|png|gif))/ig, 'Enter correct url!').required()
         }),
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: formValues => {
             console.log(formValues)
+            uploadImage(formValues)
             formik.resetForm();
             setIsOpen(false);
         }
     })
 
+    const uploadImage = async(formValues:formValues) => {
+        const resp = await fetchUploadImage(formValues.link, formValues.label, token) 
+        const time = new Date()
+        dispatch(reloadImages(time.getMilliseconds()))
+    }
+
 
 
     return (
         <div className='col-12 col-md-6 d-flex justify-content-center justify-content-md-end'>
-            <button onClick={openModal} className='navAddPhoto px-3'>Add a photo</button>
+
+            <button onClick={openModal} disabled={(logged) ? false : true} className='navAddPhoto px-3'>Add a photo</button>
+            
 
             <Modal
                 show={modalIsOpen}

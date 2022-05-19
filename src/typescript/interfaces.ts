@@ -26,5 +26,6 @@ export interface UserLogIn {
 export interface UserLogged {
     name:string, 
     password:string,
-    token: string
+    token: string,
+    userId: string
 }

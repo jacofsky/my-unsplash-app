@@ -46,18 +46,13 @@
     box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     border: 0px solid transparent;
-}
-
-.navAddPhoto {
-    color: white;
-    background-color: #3DB46D;
-    font-family: 'Noto Sans', sans-serif;
-    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    border: 0px solid transparent;
     font-weight: 700;
     font-size: 14px;
     transition: all .5s;
+}
+
+.navAddPhoto:disabled {
+    filter: grayscale(1);
 }
 
 .navAddPhoto:hover {
@@ -260,7 +255,8 @@
     display: -ms-flexbox; /* Not needed if autoprefixing */
     display: flex;
     margin-left: -30px; /* gutter size offset */
-    
+    height: 87.2vh;
+    overflow-y: auto;
     width: auto;
 }
 
@@ -282,4 +278,70 @@ button:focus-visible {
 .infoError {
     color: #EB5757;
     font-weight: bold;
+}
+
+
+.modalCenter {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    height: 488px;
+
+}
+
+.siginOverFlow {
+    margin: 0;
+    width: 4rem;
+    overflow-x: hidden;
+
+}
+
+.spinnerSignIn {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    height: 344px;
+}
+
+
+.my-masonry-grid::-webkit-scrollbar {
+    display: none;  /* Ocultar scroll */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    
+    background-color: #ffffff;
+    width: 100%;
+    border: #ebebeb 1px solid;
+}
+
+.footer p {
+    margin: .3rem 0;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.footer a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.labelnotfound {
+    font-size: 1.5rem;
+    color: #BDBDBD;
+    font-family: 'Noto Sans', sans-serif;
+
+    margin-bottom: 12rem;
+}
+
+.notFound {
+    height: 87.2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -3,14 +3,22 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik';
 
 import { Modal } from 'react-bootstrap'
+import { validPassword } from '../helpers/validatePassword';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDeleteImage } from '../helpers/fetch';
+import { reloadImages } from '../actions/uiActions';
 
 
 interface formValues {
     password: string;
 }
 
+interface Props {
+    imageId: string;
+}
 
-const DeleteButton = () => {
+
+const DeleteButton = ({imageId}:Props) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -20,6 +28,11 @@ const DeleteButton = () => {
         formik.resetForm();
         setIsOpen(false);
     }
+
+    const userPassword = useSelector((state:any) => state.auth.password)
+    const token = useSelector((state:any) => state.auth.token)
+
+    const dispatch = useDispatch()
 
 
     const formik = useFormik<formValues>({
@@ -31,12 +44,25 @@ const DeleteButton = () => {
         }),
         validateOnChange: false,
         validateOnBlur: false,
-        onSubmit: formValues => {
-            console.log(formValues)
-            formik.resetForm();
-            setIsOpen(false);
+        onSubmit: ({password}) => {
+            deleteImage(password)
         }
     })
+
+    const deleteImage = async(inputPassword:string) => {
+        const isValid = await validPassword(inputPassword, userPassword)
+        if (!isValid) {
+            formik.setFieldError("password", "Wrong password")
+        } else {
+            const resp = await fetchDeleteImage(imageId, token, inputPassword)
+            console.log(resp)
+            const date = new Date
+            dispatch(reloadImages(date.getMilliseconds()))
+            formik.resetForm()
+            setIsOpen(false)
+        }
+        
+    }
 
 
     return (
@@ -52,6 +78,8 @@ const DeleteButton = () => {
                 dialogClassName='mt-5 modalStyle'
             >
                 <Modal.Body>
+
+                    
                     <h3 className='modal-tittle'>Are you sure?</h3>
 
                     <form onSubmit={formik.handleSubmit} className='signInModalContainer mt-3'>

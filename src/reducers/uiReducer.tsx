@@ -73,12 +73,6 @@ export const uiReducer = (state = initialState, action: AnyAction) => {
                 ...action.payload   
             }
 
-        case types.uiSetSearcher:
-            return {
-                ...state,
-                label: null   
-            }
-
         default:
             return state
     }

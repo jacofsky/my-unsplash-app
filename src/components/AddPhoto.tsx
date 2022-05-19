@@ -46,6 +46,7 @@ const AddPhoto = () => {
 
     const uploadImage = async(formValues:formValues) => {
         const resp = await fetchUploadImage(formValues.link, formValues.label, token) 
+        console.log(resp)
         const time = new Date()
         dispatch(reloadImages(time.getMilliseconds()))
     }

@@ -2,7 +2,7 @@ import { startLaodingSignin, finishLaodingSignin } from './uiActions';
 import { UserLogged, UserLogIn, UserRegister } from '../typescript/interfaces';
 import { fetchLogin, fetchRegister } from "../helpers/fetch";
 import { types } from "../types/types";
-import { openLoginModal, openRegisterModal, closeLoginModal, closeRegisterModal } from '../actions/uiActions';
+import { closeLoginModal, closeRegisterModal } from '../actions/uiActions';
 
 
 export const startRegister = (user:UserRegister) => {

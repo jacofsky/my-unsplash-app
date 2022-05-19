@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setSearcher, cleanSearcher } from '../actions/uiActions'
+import { setSearcher } from '../actions/uiActions'
 import AddPhoto from './AddPhoto'
 import Logout from './Logout'
 import SignIn from './SignIn'

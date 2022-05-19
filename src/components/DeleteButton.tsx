@@ -56,7 +56,7 @@ const DeleteButton = ({imageId}:Props) => {
         } else {
             const resp = await fetchDeleteImage(imageId, token, inputPassword)
             console.log(resp)
-            const date = new Date
+            const date = new Date()
             dispatch(reloadImages(date.getMilliseconds()))
             formik.resetForm()
             setIsOpen(false)

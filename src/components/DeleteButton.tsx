@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik';
 
-import { Modal } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import { validPassword } from '../helpers/validatePassword';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeleteImage } from '../helpers/fetch';
-import { reloadImages } from '../actions/uiActions';
+import { reloadImages, startLaodingSignin, finishLaodingSignin } from '../actions/uiActions';
 
 
 interface formValues {
@@ -31,6 +31,8 @@ const DeleteButton = ({imageId}:Props) => {
 
     const userPassword = useSelector((state:any) => state.auth.password)
     const token = useSelector((state:any) => state.auth.token)
+    const {loadingInModal} = useSelector((state:any) => state.ui)
+
 
     const dispatch = useDispatch()
 
@@ -45,11 +47,14 @@ const DeleteButton = ({imageId}:Props) => {
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: ({password}) => {
+            dispatch(startLaodingSignin())
             deleteImage(password)
+            dispatch(finishLaodingSignin())
         }
     })
 
     const deleteImage = async(inputPassword:string) => {
+
         const isValid = await validPassword(inputPassword, userPassword)
         if (!isValid) {
             formik.setFieldError("password", "Wrong password")
@@ -79,20 +84,26 @@ const DeleteButton = ({imageId}:Props) => {
             >
                 <Modal.Body>
 
-                    
-                    <h3 className='modal-tittle'>Are you sure?</h3>
+                    {
+                        loadingInModal
+                        ?  <div className='spinnerDelete'><Spinner animation='border' variant='danger'/></div>
+                        :
+                        <>
+                            <h3 className='modal-tittle'>Are you sure?</h3>
 
-                    <form onSubmit={formik.handleSubmit} className='signInModalContainer mt-3'>
-                        <label>Password</label>
-                        <input onChange={formik.handleChange} value={formik.values.password} className={ (formik.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="password" placeholder='Password' name='password' />
-                            
-                            
-                        <div className='d-flex justify-content-end my-3'>
-                            <button type='button' className='negativeButton' onClick={closeModal}>Cancel</button>
-                            <button type='submit' className='deleteButton'>Delete</button>
-                        </div>
+                            <form onSubmit={formik.handleSubmit} className='signInModalContainer mt-3'>
+                                <label>Password</label>
+                                <input onChange={formik.handleChange} value={formik.values.password} className={ (formik.errors.password) ?`defaultInput errorInput` : `defaultInput` } type="password" placeholder='Password' name='password' />
+                                    
+                                    
+                                <div className='d-flex justify-content-end my-3'>
+                                    <button type='button' className='negativeButton' onClick={closeModal}>Cancel</button>
+                                    <button type='submit' className='deleteButton'>Delete</button>
+                                </div>
 
-                    </form>
+                            </form>
+                        </>
+                    }
                 </Modal.Body>
             </Modal>
         </>

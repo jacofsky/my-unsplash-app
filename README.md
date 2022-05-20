@@ -1,3 +1,2 @@
 ## Falta
-- Renew token
-- Spinners
+- logout

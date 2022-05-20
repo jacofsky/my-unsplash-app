@@ -60,7 +60,7 @@ export const fetchLogin = async (user:UserLogIn) => {
     return resp
 }
 
-export const fetchRenewToken = async (uid:string) => {
+export const fetchRenewToken = async (uid:any) => {
     const resp = await axios.post(`${userPath}/renew`, {uid})
     return resp
 }

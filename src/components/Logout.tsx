@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import { startLogOut } from "src/actions/auth";
 
 const Logout = () => {
 
-  const {name} = useSelector((state: any) => state.auth);
-
   const [modal, setModal] = useState(false)
+
+  const {name} = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch()
+
+  const handleLoguot = () => {
+    setModal(false)
+    dispatch(startLogOut() as any)
+  }
 
   return (
     <div>
@@ -24,7 +31,9 @@ const Logout = () => {
           <>
             <h3 className="modal-tittle">Sure you wanna leave?</h3>
 
-            <button>LogOut</button>
+            <div className="d-flex justify-content-center my-4">
+              <button className="deleteButton" onClick={handleLoguot}>LogOut</button>
+            </div>
           </>
         </Modal.Body>
       </Modal>

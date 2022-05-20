@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Modal } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUploadImage } from '../helpers/fetch';
-import { reloadImages } from '../actions/uiActions';
+import { reloadImages, startLaodingSignin, finishLaodingSignin } from '../actions/uiActions';
 
 interface formValues {
     label: string;
@@ -16,6 +16,8 @@ const AddPhoto = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
 
     const {logged, token} = useSelector((state:any) => state.auth)
+    const {loadingInModal} = useSelector((state:any) => state.ui)
+
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => {
@@ -37,9 +39,10 @@ const AddPhoto = () => {
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: formValues => {
-            console.log(formValues)
+            dispatch(startLaodingSignin())
             uploadImage(formValues)
             formik.resetForm();
+            dispatch(finishLaodingSignin())
             setIsOpen(false);
         }
     })
@@ -68,21 +71,30 @@ const AddPhoto = () => {
                 
 
                 <Modal.Body>
-                    <h3 className='modal-tittle'>Add a new photo</h3>
-
-                    <form onSubmit={formik.handleSubmit} className='signInModalContainer mt-3'>
-                        <label>Label</label>
-                        <input className={ (formik.errors.label) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Describe your image' name='label' onChange={formik.handleChange} value={formik.values.label} />
-                        <label>Link</label>
-                        <input className={ (formik.errors.link) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Your image!' name='link' onChange={formik.handleChange} value={formik.values.link} />
-                        
-                        <div className='d-flex justify-content-end my-3'>
-                            <button type='button' className='negativeButton' onClick={closeModal}>Cancel</button>
-                            <button type='submit' className='afirmativeButton'>Submit</button>
-                        </div>
 
 
-                    </form>
+                    {
+                        loadingInModal
+                        ? <div className='spinnerAddPhoto'><Spinner animation='border' variant='success'/></div>
+                            :
+                            <>
+                                <h3 className='modal-tittle'>Add a new photo</h3>
+
+                                <form onSubmit={formik.handleSubmit} className='signInModalContainer mt-3'>
+                                    <label>Label</label>
+                                    <input className={ (formik.errors.label) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Describe your image' name='label' onChange={formik.handleChange} value={formik.values.label} />
+                                    <label>Link</label>
+                                    <input className={ (formik.errors.link) ?`defaultInput errorInput` : `defaultInput` } type="text" placeholder='Your image!' name='link' onChange={formik.handleChange} value={formik.values.link} />
+                                    
+                                    <div className='d-flex justify-content-end my-3'>
+                                        <button type='button' className='negativeButton' onClick={closeModal}>Cancel</button>
+                                        <button type='submit' className='afirmativeButton'>Submit</button>
+                                    </div>
+
+
+                                </form>
+                            </>
+                    }
 
                 </Modal.Body>
 

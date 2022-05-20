@@ -52,7 +52,6 @@ export const authReducer = (state = initialState, action:AnyAction) => {
                 logged: false,
                 error: false,
                 locationError: null
-
             }
 
         

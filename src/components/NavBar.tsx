@@ -16,7 +16,7 @@ const NavBar = () => {
   const searchOnchange = (value:string) => {
     setLabel(value)
     console.log(label)
-    dispatch(setSearcher(label.trim()))
+    dispatch(setSearcher(value.trim()))
   } 
 
   return (

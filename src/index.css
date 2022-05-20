@@ -305,28 +305,47 @@ button:focus-visible {
     height: 344px;
 }
 
+.spinnerAddPhoto {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    height: 312px;
+}
+
 
 .my-masonry-grid::-webkit-scrollbar {
     display: none;  /* Ocultar scroll */
 }
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: relative;
     text-align: center;
-    
+    bottom: 0;
+
     background-color: #ffffff;
     width: 100%;
+    border-radius: 1rem 1rem 0 0;
     border: #ebebeb 1px solid;
 }
 
-.footer p {
+.footer-loading {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+
+    background-color: #ffffff;
+    width: 100%;
+    border-radius: 1rem 1rem 0 0;
+    border: #ebebeb 1px solid;
+}
+
+.footer-text {
     margin: .3rem 0;
     font-family: 'Noto Sans', sans-serif;
 }
 
-.footer a {
+.footer-link {
     text-decoration: none;
     font-weight: bolder;
 }
@@ -344,4 +363,12 @@ button:focus-visible {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.spinnerDelete {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    height: 224px;
 }

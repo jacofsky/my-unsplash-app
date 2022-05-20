@@ -38,8 +38,7 @@
 <!-- OVERVIEW -->
 
 ## Overview
-
-![screenshot](https://user-images.githubusercontent.com/16707738/92399059-5716eb00-f132-11ea-8b14-bcacdc8ec97b.png)
+![My-Unsplash-Screenshot](https://user-images.githubusercontent.com/75596989/169608491-db0f2d3f-b33a-4f94-b681-d9f90ebb77f4.png)
 
 Hi, I'm Jaco and this is my first dev challenge.
 I developed My Unsplash challenge with authentication.
